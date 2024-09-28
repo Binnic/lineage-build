@@ -1,0 +1,34 @@
+language: python
+
+python:
+  - "3.8"
+  - "3.9"
+  - "3.10"
+
+sudo: required
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y openjdk-8-jdk git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip
+  - wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
+  - unzip platform-tools-latest-linux.zip -d ~
+  - export PATH=~/platform-tools:$PATH
+  - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+  - chmod a+x ~/bin/repo
+  - export PATH=~/bin:$PATH
+  - git config --global user.email "nicholas.rassya18@sma.belajar.id"
+  - git config --global user.name "Nicholas Rassya"
+  - export USE_CCACHE=1
+  - export CCACHE_EXEC=/usr/bin/ccache
+  - ccache -M 50G
+  - ccache -o compression=true
+
+script:
+  - mkdir -p ~/bin
+  - mkdir -p ~/android/lineage
+  - cd ~/android/lineage
+  - repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --git-lfs
+  - repo sync
+  - cd ~/android/lineage
+  - source build/envsetup.sh
+  - breakfast munch
